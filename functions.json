@@ -153,25 +153,25 @@
     "readfile": {
       "label": "readfile",
       "type": "function",
-      "description": "Reads a file from disk.",
+      "description": "Reads a file from workspace.",
       "insert": "readfile()"
     },
     "listfiles": {
       "label": "listfiles",
       "type": "function",
-      "description": "Lists files in a directory.",
+      "description": "Lists files from workspace.",
       "insert": "listfiles()"
     },
     "writefile": {
       "label": "writefile",
       "type": "function",
-      "description": "Writes data to a file.",
+      "description": "Writes data to a file that is inside of workspace.",
       "insert": "writefile()"
     },
     "makefolder": {
       "label": "makefolder",
       "type": "function",
-      "description": "Creates a new folder.",
+      "description": "Creates a new folder in workspace.",
       "insert": "makefolder()"
     },
     "appendfile": {
@@ -195,7 +195,7 @@
     "delfolder": {
       "label": "delfolder",
       "type": "function",
-      "description": "Deletes a folder.",
+      "description": "Deletes a folder in workspace.",
       "insert": "delfolder()"
     },
     "delfile": {
@@ -600,7 +600,7 @@
     "identifyexecutor": {
       "label": "identifyexecutor",
       "type": "function",
-      "description": "Returns executor name and version.",
+      "description": "Returns executor name.",
       "insert": "identifyexecutor()"
     },
     "messagebox": {
@@ -678,8 +678,9 @@
     "setrbxclipboard": {
       "label": "setrbxclipboard",
       "type": "function",
-      "description": "Copies text to Roblox clipboard.",
+      "description": "Copies text to clipboard.",
       "insert": "setrbxclipboard()"
     }
   }
+
 }
