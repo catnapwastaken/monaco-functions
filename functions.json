@@ -20,19 +20,34 @@
     }
   },
 
-  "cryptography": {
+  "Encoding": {
     "base64encode": {
       "label": "base64encode",
       "type": "function",
-      "description": "Encodes a string using Base64.",
+      "description": "encodes a string with Base64 encoding.",
       "insert": "base64encode()"
     },
     "base64decode": {
       "label": "base64decode",
       "type": "function",
-      "description": "Decodes a Base64 string.",
+      "description": "decodes a Base64-encoded string back into its original form.",
       "insert": "base64decode()"
     },
+    "lz4compress": {
+      "label": "lz4compress",
+      "type": "function",
+      "description": "compresses a string with the LZ4 compression algorithm.",
+      "insert": "lz4compress()"
+    },
+    "lz4decompress": {
+      "label": "lz4decompress",
+      "type": "function",
+      "description": "decompresses a string that was encoded using the LZ4 compression algorithm back to regular data.",
+      "insert": "lz4decompress()"
+    }
+  },
+
+"cryptography": {
     "encrypt": {
       "label": "encrypt",
       "type": "function",
@@ -65,32 +80,17 @@
     }
   },
 
-  "compression": {
-    "lz4compress": {
-      "label": "lz4compress",
-      "type": "function",
-      "description": "Compresses data using the LZ4 algorithm.",
-      "insert": "lz4compress()"
-    },
-    "lz4decompress": {
-      "label": "lz4decompress",
-      "type": "function",
-      "description": "Decompresses LZ4 compressed data.",
-      "insert": "lz4decompress()"
-    }
-  },
-
   "debug": {
     "getconstant": {
       "label": "getconstant",
       "type": "function",
-      "description": "Gets a constant from a function.",
+      "description": "returns the constant at the specified index from a Luau function. If no constant exists at that index, it returns nil instead.This is useful when you want to inspect specific constant values (such as strings, numbers, or booleans) without dumping the entire list.",
       "insert": "getconstant()"
     },
     "getconstants": {
       "label": "getconstants",
       "type": "function",
-      "description": "Returns all constants used by a function.",
+      "description": "returns a list of all constants used within a Luau function's bytecode. This includes literal values like numbers, strings, booleans, and nil.",
       "insert": "getconstants()"
     },
     "getinfo": {
@@ -102,25 +102,25 @@
     "getproto": {
       "label": "getproto",
       "type": "function",
-      "description": "Gets a function prototype.",
+      "description": "returns a specific function prototype from a Luau function by index. Optionally, it can search for active functions of the proto, if the activated parameter is set to true.These are internal function definitions (e.g. nested functions) that exist as part of the compiled bytecode, even if they aren't assigned or called.",
       "insert": "getproto()"
     },
     "getprotos": {
       "label": "getprotos",
       "type": "function",
-      "description": "Returns nested function prototypes.",
+      "description": "returns all function prototypes defined within the specified Luau function.These are internal function definitions (e.g. nested functions) that exist as part of the compiled bytecode, even if they aren't assigned or called.",
       "insert": "getprotos()"
     },
     "getstack": {
       "label": "getstack",
       "type": "function",
-      "description": "Gets stack variables at a level.",
+      "description": "retrieves values from the stack at the specified call level.This function is useful for inspecting local variables or arguments at different layers of the stack frame. If no index is given, all values at that stack level are returned as a list.",
       "insert": "getstack()"
     },
     "getupvalue": {
       "label": "getupvalue",
       "type": "function",
-      "description": "Gets an upvalue from a function.",
+      "description": "returns a list of upvalues captured by a Luau function. These are the external variables that a function closes over from its surrounding scope.If the function has no upvalues, the result will be an empty table.",
       "insert": "getupvalue()"
     },
     "getupvalues": {
@@ -132,19 +132,19 @@
     "setconstant": {
       "label": "setconstant",
       "type": "function",
-      "description": "Sets a constant in a function.",
+      "description": "modifies a constant at the specified index in a Luau function bytecode.This can be used to change hardcoded behavior within functions without modifying their source code - although it requires knowing the correct constant index beforehand.",
       "insert": "setconstant()"
     },
     "setstack": {
       "label": "setstack",
       "type": "function",
-      "description": "Sets a stack value.",
+      "description": "replaces a value in a specified stack frame.This allows for powerful manipulation of runtime variables or arguments, particularly useful in advanced debugging or dynamic patching scenarios.",
       "insert": "setstack()"
     },
     "setupvalue": {
       "label": "setupvalue",
       "type": "function",
-      "description": "Sets an upvalue.",
+      "description": "replaces an upvalue at the specified index in a Luau function, with a new value.This allows for controlled modification of function state, often used in hooking or testing environments.",
       "insert": "setupvalue()"
     }
   },
@@ -153,61 +153,61 @@
     "readfile": {
       "label": "readfile",
       "type": "function",
-      "description": "Reads a file from workspace.",
+      "description": "retrieves the contents of a file at the specified path and returns it as a string.If the file does not exist or cannot be accessed, the function will error.",
       "insert": "readfile()"
     },
     "listfiles": {
       "label": "listfiles",
       "type": "function",
-      "description": "Lists files from workspace.",
+      "description": "returns an array of strings representing all files and folders within the specified directory.This can be used to dynamically check which files exist in a folder, etc.",
       "insert": "listfiles()"
     },
     "writefile": {
       "label": "writefile",
       "type": "function",
-      "description": "Writes data to a file that is inside of workspace.",
+      "description": "writes data to a file at the specified path. If the file already exists, its contents will be overwritten.This is one of the primary ways to persist string data within the executor's file sandbox.",
       "insert": "writefile()"
     },
     "makefolder": {
       "label": "makefolder",
       "type": "function",
-      "description": "Creates a new folder in workspace.",
+      "description": "creates a folder at the specified path if one does not already exist.This is useful for organising files into separate directories.",
       "insert": "makefolder()"
     },
     "appendfile": {
       "label": "appendfile",
       "type": "function",
-      "description": "Appends data to a file.",
+      "description": "appends string content to the end of a file at the specified path. If the file does not exist, it will be created.This is useful for logging, accumulating data over time, or extending file contents without overwriting them.",
       "insert": "appendfile()"
     },
     "isfile": {
       "label": "isfile",
       "type": "function",
-      "description": "Checks if a path is a file.",
+      "description": "checks whether a given path exists and refers to a file.This function is useful when validating input, confirming file existence before reading, or filtering entries returned by listfiles.",
       "insert": "isfile()"
     },
     "isfolder": {
       "label": "isfolder",
       "type": "function",
-      "description": "Checks if a path is a folder.",
+      "description": "checks whether a given path exists and refers to a folder.This is useful when verifying that a directory exists before writing files into it or listing its contents.",
       "insert": "isfolder()"
     },
     "delfolder": {
       "label": "delfolder",
       "type": "function",
-      "description": "Deletes a folder in workspace.",
+      "description": "deletes the folder at the specified path if it exists.",
       "insert": "delfolder()"
     },
     "delfile": {
       "label": "delfile",
       "type": "function",
-      "description": "Deletes a file.",
+      "description": "deletes the file at the specified path if it exists.This is useful for cleaning up temporary data or removing no-longer-needed files at runtime.",
       "insert": "delfile()"
     },
     "loadfile": {
       "label": "loadfile",
       "type": "function",
-      "description": "Loads a Lua file.",
+      "description": " compiles the Luau source code from a file and returns the resulting function (chunk). This chunk runs in the global environment.If the file contains syntax errors, an error is thrown - just like loadstring. The error will appear in the console.",
       "insert": "loadfile()"
     },
     "dofile": {
@@ -222,37 +222,37 @@
     "clonefunction": {
       "label": "clonefunction",
       "type": "function",
-      "description": "Clones a function.",
+      "description": "creates and returns a new function that has the exact same behaviour as the passed function.",
       "insert": "clonefunction()"
     },
     "hookfunction": {
       "label": "hookfunction",
       "type": "function",
-      "description": "Hooks a function.",
+      "description": "allows you to hook a function with another wanted function, returning the original unhooked function.",
       "insert": "hookfunction()"
     },
     "iscclosure": {
       "label": "iscclosure",
       "type": "function",
-      "description": "Checks if a function is a C closure.",
+      "description": "checks whether a given function is a C closure or not.",
       "insert": "iscclosure()"
     },
     "islclosure": {
       "label": "islclosure",
       "type": "function",
-      "description": "Checks if a function is a Lua closure.",
+      "description": "checks whether a given function is a Luau closure or not.",
       "insert": "islclosure()"
     },
     "isexecutorclosure": {
       "label": "isexecutorclosure",
       "type": "function",
-      "description": "Checks if a closure belongs to the executor.",
+      "description": "checks whether a given function is a closure of the executor. This also includes closures retrieved using getscriptclosure or loadstring",
       "insert": "isexecutorclosure()"
     },
     "newcclosure": {
       "label": "newcclosure",
       "type": "function",
-      "description": "Creates a new C closure.",
+      "description": "takes any Luau function and wraps it into a C closure. When the returned function is called, it invokes the original Luau closure with the provided arguments, then passes the closure's returned values back to the caller.",
       "insert": "newcclosure()"
     }
   },
@@ -261,19 +261,19 @@
     "cloneref": {
       "label": "cloneref",
       "type": "function",
-      "description": "Clones a reference to an instance.",
+      "description": "returns a reference clone of an Instance. The returned object behaves identically to the original but is not strictly equal (==) to it.This is commonly used to safely interact with services such as game.CoreGui, making weak-table style attacks fail.",
       "insert": "cloneref()"
     },
     "compareinstances": {
       "label": "compareinstances",
       "type": "function",
-      "description": "Compares two instances.",
+      "description": "checks if two Instances are equal.This is primarily used for instances which have been cloneref'd, where the normal equality check with == fails.",
       "insert": "compareinstances()"
     },
     "fireclickdetector": {
       "label": "fireclickdetector",
       "type": "function",
-      "description": "Fires a ClickDetector.",
+      "description": "triggers a ClickDetector event. By default, it fires the MouseClick event.",
       "insert": "fireclickdetector()"
     }
   },
@@ -321,37 +321,37 @@
     "getgc": {
       "label": "getgc",
       "type": "function",
-      "description": "Returns Lua garbage collected objects.",
+      "description": "returns a list of non-dead garbage-collectable values. These include functions, userdatas, and optionally tables.",
       "insert": "getgc()"
     },
     "getgenv": {
       "label": "getgenv",
       "type": "function",
-      "description": "Returns executor global environment.",
+      "description": "returns the executor's global environment table, which is shared across all executor-made threads.",
       "insert": "getgenv()"
     },
     "getloadedmodules": {
       "label": "getloadedmodules",
       "type": "function",
-      "description": "Returns loaded ModuleScripts.",
+      "description": "returns a list of all ModuleScript instances that have been loaded (e.g. require'd).This includes only modules with completed executions, and excludes any modules that errored or haven't been required yet.",
       "insert": "getloadedmodules()"
     },
     "getrenv": {
       "label": "getrenv",
       "type": "function",
-      "description": "Returns Roblox global environment.",
+      "description": "returns the Roblox global environment, which is used by the entire game. Changes to this environment will affect your executor environment as well.",
       "insert": "getrenv()"
     },
     "gethui": {
       "label": "gethui",
       "type": "function",
-      "description": "Returns the hidden UI service.",
+      "description": "returns a hidden Instance container used for safely storing UI elements. This container is mainly designed to avoid detections.",
       "insert": "gethui()"
     },
     "checkcaller": {
       "label": "checkcaller",
       "type": "function",
-      "description": "Checks if the caller is from the executor.",
+      "description": "returns a boolean indicating whether the current function was invoked from the executor's own thread. This is useful for differentiating between your own calls and those made by the game.",
       "insert": "checkcaller()"
     },
     "isrbxactive": {
@@ -366,13 +366,13 @@
     "getthreadidentity": {
       "label": "getthreadidentity",
       "type": "function",
-      "description": "Gets current thread identity.",
+      "description": "retrieves the thread's identity of the running Luau thread.",
       "insert": "getthreadidentity()"
     },
     "setthreadidentity": {
       "label": "setthreadidentity",
       "type": "function",
-      "description": "Sets thread identity.",
+      "description": "sets the current Luau thread identity and capabilities matching that identity.This is commonly used alongside functions like gethiddenproperty or getconnections which may require elevated access.",
       "insert": "setthreadidentity()"
     }
   },
@@ -381,54 +381,48 @@
     "getrunningscripts": {
       "label": "getrunningscripts",
       "type": "function",
-      "description": "Returns running scripts.",
+      "description": "returns a list of all running scripts in the caller's global state. This includes Script, LocalScript, and ModuleScript instances - excluding CoreScripts by default.",
       "insert": "getrunningscripts()"
     },
     "getscriptbytecode": {
       "label": "getscriptbytecode",
       "type": "function",
-      "description": "Gets script bytecode.",
+      "description": "retrieves the bytecode of a LocalScript, ModuleScript, and Script.",
       "insert": "getscriptbytecode()"
     },
     "getscripthash": {
       "label": "getscripthash",
       "type": "function",
-      "description": "Gets script hash.",
+      "description": "getscripthash returns a SHA-384 hash in hexadecimal format of the raw bytecode for a given Script, LocalScript, or ModuleScript.This is useful for identifying scripts by their content, especially when checking for known modules or verifying integrity.",
       "insert": "getscripthash()"
     },
     "getscripts": {
       "label": "getscripts",
       "type": "function",
-      "description": "Returns all script instances.",
+      "description": "returns a list of all Script, LocalScript, and ModuleScript instances present.This function excludes CoreScripts by default.",
       "insert": "getscripts()"
     },
     "getsenv": {
       "label": "getsenv",
       "type": "function",
-      "description": "Gets script environment.",
+      "description": "returns the global environment table of a given Script, LocalScript, or ModuleScript.This environment contains all global variables and functions available to the target script, such as custom-defined functions or state values.",
       "insert": "getsenv()"
     },
     "getcallingscript": {
       "label": "getcallingscript",
       "type": "function",
-      "description": "Gets the calling script.",
+      "description": "returns the Script, LocalScript, or ModuleScript that triggered the current code execution.",
       "insert": "getcallingscript()"
     },
     "getscriptclosure": {
       "label": "getscriptclosure",
       "type": "function",
-      "description": "Gets script closure.",
+      "description": "getscriptclosure creates and returns a Luau function closure from the compiled bytecode of a Script, LocalScript, or ModuleScript.This function is often used to extract constants or behaviour from scripts without needing to run them inside the game.",
       "insert": "getscriptclosure()"
     }
   },
 
   "drawing": {
-    "Drawing": {
-      "label": "Drawing",
-      "type": "function",
-      "description": "Drawing namespace.",
-      "insert": "Drawing"
-    },
     "Drawing.new": {
       "label": "Drawing.new",
       "type": "function",
@@ -444,25 +438,25 @@
     "isrenderobj": {
       "label": "isrenderobj",
       "type": "function",
-      "description": "Checks if object is Drawing render object.",
+      "description": "checks whether a given value is a valid Drawing object.This is useful for validation in functions or modules that work with custom render systems.",
       "insert": "isrenderobj()"
     },
     "getrenderproperty": {
       "label": "getrenderproperty",
       "type": "function",
-      "description": "Gets property of Drawing object.",
+      "description": "retrieves the value of a property from a Drawing object. This behaves identically to using object[property], but is useful when working with dynamic property names or for reflection-like access.",
       "insert": "getrenderproperty()"
     },
     "setrenderproperty": {
       "label": "setrenderproperty",
       "type": "function",
-      "description": "Sets property of Drawing object.",
+      "description": "assigns a value to a property of a Drawing object. This behaves identically to object[property] = value, but is useful for dynamic or abstracted property access.",
       "insert": "setrenderproperty()"
     },
     "cleardrawcache": {
       "label": "cleardrawcache",
       "type": "function",
-      "description": "Clears Drawing cache.",
+      "description": "removes all active drawing objects created with Drawing.new.",
       "insert": "cleardrawcache()"
     }
   },
@@ -471,7 +465,7 @@
     "WebSocket": {
       "label": "WebSocket",
       "type": "function",
-      "description": "WebSocket namespace.",
+      "description": "The WebSocket class provides a lightweight interface for establishing and working with WebSocket connections. It allows scripts to send and receive messages over a persistent connection to a WebSocket server.",
       "insert": "WebSocket"
     },
     "WebSocket.connect": {
@@ -495,7 +489,7 @@
     "request": {
       "label": "request",
       "type": "function",
-      "description": "Performs HTTP request.",
+      "description": "sends a HTTP request to the given URL using the provided configuration table. It yields until the request is complete and returns a structured response.",
       "insert": "request()"
     }
   },
@@ -561,37 +555,37 @@
     "getrawmetatable": {
       "label": "getrawmetatable",
       "type": "function",
-      "description": "Gets the raw metatable of an object.",
+      "description": "returns the raw metatable of an object, even if that object has a __metatable field set.",
       "insert": "getrawmetatable()"
     },
     "hookmetamethod": {
       "label": "hookmetamethod",
       "type": "function",
-      "description": "Hooks a metamethod.",
+      "description": "takes any Luau object that can have a metatable, and attempts to hook the specified metamethod of the object. Internally, it essentially uses hookfunction to hook specific metamethods.",
       "insert": "hookmetamethod()"
     },
     "getnamecallmethod": {
       "label": "getnamecallmethod",
       "type": "function",
-      "description": "Gets the current __namecall method.",
+      "description": "returns the name of the method that invoked the __namecall metamethod.When used inside a hookmetamethod hook targeting __namecall, it will attempt to retrieve the method being called (e.g. InvokeServer).When used outside of said hook, this function will safely return nil.",
       "insert": "getnamecallmethod()"
     },
     "isreadonly": {
       "label": "isreadonly",
       "type": "function",
-      "description": "Checks if a table is read-only.",
+      "description": " checks whether a table is currently set as readonly.",
       "insert": "isreadonly()"
     },
     "setrawmetatable": {
       "label": "setrawmetatable",
       "type": "function",
-      "description": "Sets a raw metatable.",
+      "description": "forcibly sets the metatable of a value, bypassing the __metatable protection field.",
       "insert": "setrawmetatable()"
     },
     "setreadonly": {
       "label": "setreadonly",
       "type": "function",
-      "description": "Sets a table's read-only state.",
+      "description": "sets whether a table is readonly or writable.",
       "insert": "setreadonly()"
     }
   },
@@ -600,7 +594,7 @@
     "identifyexecutor": {
       "label": "identifyexecutor",
       "type": "function",
-      "description": "Returns executor name.",
+      "description": "returns the name and version of the currently running executor.",
       "insert": "identifyexecutor()"
     },
     "messagebox": {
@@ -612,61 +606,61 @@
     "queue_on_teleport": {
       "label": "queue_on_teleport",
       "type": "function",
-      "description": "Queues code to run on teleport.",
+      "description": "Queues code to run when joining a new game.",
       "insert": "queue_on_teleport()"
     },
     "getcallbackvalue": {
       "label": "getcallbackvalue",
       "type": "function",
-      "description": "Gets callback value from connection.",
+      "description": "retrieves the assigned callback property on an Instance, such as OnInvoke.Normally, these properties are write-only, meaning you can assign a function to them but cannot read them back. This function bypasses that limitation and exposes the function directly.",
       "insert": "getcallbackvalue()"
     },
     "getconnections": {
       "label": "getconnections",
       "type": "function",
-      "description": "Returns signal connections.",
+      "description": "retrieves a list of Connection objects currently attached to a given RBXScriptSignal.",
       "insert": "getconnections()"
     },
     "getcustomasset": {
       "label": "getcustomasset",
       "type": "function",
-      "description": "Loads local file as asset.",
+      "description": "returns a content ID (e.g. rbxasset://) that can be used in Roblox APIs for loading audio, meshes, UI images, and other asset types.Internally, the file at the given path is copied to the game's content directory and then exposed with a usable asset URL.",
       "insert": "getcustomasset()"
     },
     "gethiddenproperty": {
       "label": "gethiddenproperty",
       "type": "function",
-      "description": "Gets hidden property.",
+      "description": "gethiddenproperty retrieves the value of a hidden or non-scriptable property (e.g. BinaryString, SharedString, SystemAddress) from a given Instance, even if it would normally throw an error when accessed directly.This function also returns whether the accessed property was hidden.",
       "insert": "gethiddenproperty()"
     },
     "sethiddenproperty": {
       "label": "sethiddenproperty",
       "type": "function",
-      "description": "Sets hidden property.",
+      "description": "sethiddenproperty assigns a value to a hidden or non-scriptable property of an Instance, even if that property is normally read-only or inaccessible.It returns true if the property is hidden and was successfully written to, or false if the property wasn't hidden but was still updated.",
       "insert": "sethiddenproperty()"
     },
     "getinstances": {
       "label": "getinstances",
       "type": "function",
-      "description": "Returns all instances.",
+      "description": "retrieves every Instance from the registry. Which means that instances that are/were parented to nil will also be returned.",
       "insert": "getinstances()"
     },
     "getnilinstances": {
       "label": "getnilinstances",
       "type": "function",
-      "description": "Returns nil-parented instances.",
+      "description": "returns a list of Instance objects that are currently unparented. These instances exist in memory but are no longer part of the DataModel hierarchy.",
       "insert": "getnilinstances()"
     },
     "isscriptable": {
       "label": "isscriptable",
       "type": "function",
-      "description": "Checks if property is scriptable.",
+      "description": " returns whether the given property of an Instance is scriptable (i.e. it does not have the notscriptable tag).If it returns true, then the property is scriptable and can be indexed normally, and vice versa.If it returns nil, then the property provided does not exist.",
       "insert": "isscriptable()"
     },
     "setscriptable": {
       "label": "setscriptable",
       "type": "function",
-      "description": "Sets scriptable state.",
+      "description": "toggles the scriptability of a hidden or non-scriptable property on an Instance. When a property is made scriptable, it can be accessed or assigned through standard indexing.",
       "insert": "setscriptable()"
     },
     "setclipboard": {
@@ -678,9 +672,8 @@
     "setrbxclipboard": {
       "label": "setrbxclipboard",
       "type": "function",
-      "description": "Copies text to clipboard.",
+      "description": "Copies text to Roblox clipboard.",
       "insert": "setrbxclipboard()"
     }
   }
-
 }
